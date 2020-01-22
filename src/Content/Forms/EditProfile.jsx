@@ -75,8 +75,8 @@ export const EditForm = () => {
 
     const handleChange = async (event) => {
         const { name, value } = event.target;
-        const finalUser = _.set(user, name, value)
-        const objectAux = {};
+        const finalUser = _.set(Object.assign({}, user), name, value)
+        const objectAux = Object.assign({}, errorObject);
         try {
             await schema.validateAt(name, finalUser);
             _.set(objectAux, name, false)
