@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { Button, Checkbox, Form, Input, Container, Grid, Header, Message, Segment } from 'semantic-ui-react'
 import { useDispatch } from 'react-redux';
-import { userActions } from '../../actions'
 import { Link } from 'react-router-dom';
+import { userActions } from '../../actions'
 
 export const RegisterForm = () => {
     let [user, setUser] = useState({

@@ -22,6 +22,8 @@ import Dropdown from './Components/Misc/DropDown';
 import { useSelector, useDispatch } from 'react-redux';
 import HeaderLink from './Components/Misc/HeaderLink';
 import { photoActions } from '../actions';
+import { EditForm } from './Forms/EditProfile';
+import MessageAlert from './Components/PhotoGrid/MessageAlert';
 
 // Heads up!
 // We using React Static to prerender our docs with server side rendering, this is a quite simple solution.
@@ -87,6 +89,7 @@ function DesktopContainer(props) {
 
   const { children } = props
   const imLogged = useSelector(state => state.authentication.loggedIn);
+  const alert = useSelector(state => state.alert);
   return (
     <Responsive getWidth={getWidth} minWidth={Responsive.onlyTablet.minWidth}>
       <Visibility
@@ -110,6 +113,7 @@ function DesktopContainer(props) {
             <Container>
             <HeaderLink setView={setView} text="All" path="/albums" active={true}/>
             <HeaderLink setView={setView} text="Only my Photos" path="/albums" active={false}/>
+            <HeaderLink text="Edit my profile" path="/edit-profile" active={false}/>
             
               <Menu.Item position='right'>
                 {!imLogged ? <>
@@ -124,12 +128,14 @@ function DesktopContainer(props) {
           <Router history={history}>
             <Switch>
               <PrivateRoute exact path="/albums" component={PhotoGrid} />
+              <PrivateRoute exact path="/edit-profile" component={EditForm} />
               <Route path="/" exact component={HomepageHeading} />
               <Route path="/login" component={LoginForm} />
               <Route path="/register" component={RegisterForm} />
               <Redirect from="*" to="/" />
             </Switch>
           </Router>
+          { alert.message && <MessageAlert message={alert.message} type={alert.type} />}
         </Segment>
       </Visibility>
 
@@ -137,67 +143,6 @@ function DesktopContainer(props) {
     </Responsive>
   )
 }
-
-// class DesktopContainer extends Component {
-//   state = {}
-
-//   hideFixedMenu = () => this.setState({ fixed: false })
-//   showFixedMenu = () => this.setState({ fixed: true })
-
-//   render() {
-//     const { children } = this.props
-//     const { fixed } = this.state
-//     const imLogged = false;
-//     return (
-//       <Responsive getWidth={getWidth} minWidth={Responsive.onlyTablet.minWidth}>
-//         <Visibility
-//           once={false}
-//           onBottomPassed={this.showFixedMenu}
-//           onBottomPassedReverse={this.hideFixedMenu}
-//         >
-//           <Segment
-//             inverted
-//             textAlign='center'
-//             style={{ minHeight: '100vh', padding: '1em 0em' }}
-//             vertical
-//           >
-//             <Menu
-//               fixed={fixed ? 'top' : null}
-//               inverted={!fixed}
-//               pointing={!fixed}
-//               secondary={!fixed}
-//               size='large'
-//             >
-//               <Container>
-//                 <Menu.Item as='a' active>
-//                 </Menu.Item>
-//                 <Menu.Item position='right'>
-//                   {!imLogged ? <>
-//                     <HeaderButton text="Log in" path="/login" inverted={!fixed} />
-//                     <HeaderButton text="Sign Up" path="/register" inverted={!fixed} primary={fixed} style={{ marginLeft: '0.5em' }} />
-//                   </> :
-//                     <HeaderButton text="Log out" path="/home" inverted={!fixed} />
-//                   }
-//                 </Menu.Item>
-//               </Container>
-//             </Menu>
-//             <Router history={history}>
-//               <Switch>
-//                 <PrivateRoute exact path="/albums" component={PhotoGrid} />
-//                 <Route path="/" exact component={HomepageHeading} />
-//                 <Route path="/login" component={LoginForm} />
-//                 <Route path="/register" component={RegisterForm} />
-//                 <Redirect from="*" to="/" />
-//               </Switch>
-//             </Router>
-//           </Segment>
-//         </Visibility>
-
-//         {children}
-//       </Responsive>
-//     )
-//   }
-// }
 
 DesktopContainer.propTypes = {
   children: PropTypes.node,

@@ -4,6 +4,7 @@ import axios from 'axios';
 export const userService = {
     login,
     logout,
+    update,
     register,
     getAll,
 };
@@ -44,6 +45,19 @@ async function register(user) {
             headers: {
                 "Content-type": "application/json; charset=UTF-8"
             },
+            data: user
+        });
+        return data;
+    } catch (error) {
+        return Promise.reject(error);
+    }
+}
+
+async function update(user) {
+    try {
+        const { data } = await axios({
+            method: 'patch',
+            url: `${config.apiUrl}/users/${user.id}`,
             data: user
         });
         return data;

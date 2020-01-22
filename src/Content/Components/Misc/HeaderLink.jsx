@@ -4,7 +4,7 @@ import { history } from '../../../helpers';
 
 function HeaderLink({ text, path, setView, ...rest }) {
     function handleClick() {
-        setView(text)
+        setView && setView(text);
         history.push(path);
     }
     return (

@@ -1,4 +1,4 @@
-import { photoConstants } from '../constants';
+import { photoConstants, alertConstants } from '../constants';
 import { photoService } from '../services/photo.service';
 
 export const photoActions = {
@@ -7,15 +7,15 @@ export const photoActions = {
     delete: _delete
 };
 
-function getAll(filter) {
+function getAll(filter, id) {
     const request = () => ({ type: photoConstants.GETALL_REQUEST })
     const success = (photos) => ({ type: photoConstants.GETALL_SUCCESS, photos })
-    const failure = (error) => ({ type: photoConstants.GETALL_FAILURE, error })
+    const failure = (error) => ({ type: alertConstants.ERROR, error })
 
     return async dispatch => {
         dispatch(request());
         try {
-            const photos = await photoService.getAll(filter);
+            const photos = await photoService.getAll(filter !== 'All' ? id : null);
             dispatch(success(photos))
         } catch (error) {
             dispatch(failure(error.toString()))

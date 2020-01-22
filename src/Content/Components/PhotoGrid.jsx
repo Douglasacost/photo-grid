@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Divider, Image, Dimmer, Loader } from 'semantic-ui-react'
+import { Divider, Dimmer, Loader } from 'semantic-ui-react'
 import ReactPaginate from 'react-paginate';
 import { useDispatch, useSelector } from 'react-redux';
 import PhotoGridGenerator from './PhotoGrid/Grid'
@@ -55,12 +55,17 @@ function PhotoGrid() {
   const dispatch = useDispatch();
   const [pagesCount, setPagesCount] = useState(0);
   const [offset, setOffset] = useState(1);
-  const photos = useSelector(state => state.photos.items || []);
-  const filter = useSelector(state => state.photos.view || 'All');
-  const isLoading = useSelector(state => state.photos.loading || false);
-  const modalData = useSelector(state => state.modal.data || null);
+  const { photos: { 
+      items: photos = [],
+      view: filter = 'all',
+      loading: isLoading = false 
+    }, modal: {
+      data: modalData = null
+    }, authentication :{
+      user: {id}
+    }} = useSelector(state => state);
   const [data, setData] = useState([])
-
+console.log(modalData)
   const handlePageClick = data => {
     let selected = data.selected;
     let offset = Math.ceil(selected * ITEMS_PER_PAGE);
@@ -69,7 +74,7 @@ function PhotoGrid() {
   };
 
   useEffect(() => {
-    dispatch(photoActions.getAll(filter))
+    dispatch(photoActions.getAll(filter, id))
   }, [filter]);
 
   const modalAction = (data) => {
@@ -93,11 +98,11 @@ function PhotoGrid() {
         Photo Grid
       </Divider>
       {
-        isLoading ? 
-        <Dimmer active>
-          <Loader indeterminate>Loading photos</Loader>
-        </Dimmer> :
-        <PhotoGridGenerator action={modalAction} array={data} />
+        isLoading ?
+          <Dimmer active>
+            <Loader indeterminate>Loading photos</Loader>
+          </Dimmer> :
+          <PhotoGridGenerator action={modalAction} array={data} />
       }
       <Divider horizontal section>
         <ReactPaginate
@@ -114,7 +119,7 @@ function PhotoGrid() {
           activeClassName={'active'}
         />
       </Divider>
-      <PhotoModal open={!!modalData} onClose={modalOnClose} data={modalData || {}} />
+      {modalData && <PhotoModal open={!!modalData} onClose={modalOnClose} data={modalData || {}} />}
     </div>
   )
 }

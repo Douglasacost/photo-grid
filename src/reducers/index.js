@@ -6,6 +6,7 @@ import { photos } from './photo.reducer';
 import { users } from './user.reducer';
 import { alert } from './alert.reducer';
 import { modal } from './modal.reducer';
+import { updateUser } from './updateUser.reducer';
 
 const rootReducer = combineReducers({
   authentication,
@@ -13,7 +14,8 @@ const rootReducer = combineReducers({
   users,
   alert,
   photos,
-  modal
+  modal,
+  updateUser
 });
 
 export default rootReducer;
