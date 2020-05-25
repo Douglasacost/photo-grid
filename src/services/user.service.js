@@ -9,12 +9,17 @@ export const userService = {
     getAll,
 };
 
-async function login(username) {
+async function login(email, password) {
     try {
-        const users = await getAll();
-        const user = users.find(user => user.email === username || user.username === username)
-        if (!user) return Promise.reject('User not found');
-        return user
+        const { data } = await axios({
+            method: 'post',
+            url: `${config.authApiUrl}/login.php`,
+            data: {
+               email, password 
+            }
+        });
+
+        return data
     } catch (error) {
         return Promise.reject(error);
     }
@@ -28,8 +33,11 @@ function logout() {
 async function getAll() {
     try {
         const { data } = await axios({
-            method: 'get',
-            url: `${config.apiUrl}/users`
+            method: 'post',
+            url: `${config.authApiUrl}/login.php`,
+            data: {
+                
+            }
         });
         return data;
     } catch (error) {
@@ -37,17 +45,17 @@ async function getAll() {
     }
 }
 
-async function register(user) {
+async function register(email, password) {
     try {
         const { data } = await axios({
             method: 'post',
-            url: `${config.apiUrl}/users`,
-            headers: {
-                "Content-type": "application/json; charset=UTF-8"
-            },
-            data: user
+            url: `${config.authApiUrl}/register.php`,
+            data: {
+               email, password 
+            }
         });
-        return data;
+
+        return data
     } catch (error) {
         return Promise.reject(error);
     }

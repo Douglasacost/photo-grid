@@ -61,7 +61,7 @@ const HomepageHeading = ({ mobile }) => (
         marginTop: mobile ? '0.5em' : '1.5em',
       }}
     />
-    <Button primary size='huge'>
+    <Button onClick={() => history.push('/register')} primary size='huge'>
       Register
       <Icon name='right arrow' />
     </Button>

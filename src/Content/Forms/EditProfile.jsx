@@ -8,7 +8,30 @@ import * as yup from 'yup';
 
 const NUMBER_ERROR = "Must be a number";
 export const EditForm = () => {
-    const currentUserData = useSelector(state=> state.authentication.user)
+    // const currentUserData = useSelector(state=> state.authentication.user)
+    const currentUserData = {
+        name: "",
+        username: "",
+        email: "",
+        address: {
+            street: "",
+            suite: "",
+            city: "",
+            zipcode: "",
+            geo: {
+                lat: "",
+                lng: ""
+            }
+        },
+        phone: "",
+        website: "",
+        company: {
+            name: "",
+            catchPhrase: "",
+            bs: ""
+        }    
+    
+    }
     let [user, setUser] = useState({
         name: "",
         username: "",

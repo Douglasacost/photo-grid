@@ -6,16 +6,16 @@ import { userActions } from '../../actions'
 
 export const RegisterForm = () => {
     let [user, setUser] = useState({
-        fullname: '',
+        email: '',
         username: '',
-        email: ''
+        password: ''
     });
     const dispatch = useDispatch();
 
     function handleSubmit(event) {
         event.preventDefault();
-        if (user.fullname && user.username && user.email) {
-            dispatch(userActions.register(user))
+        if (user.email && user.username && user.password) {
+            dispatch(userActions.register(user.email, user.password))
         }
     }
 
@@ -37,16 +37,16 @@ export const RegisterForm = () => {
                     <Form size='large' onSubmit={handleSubmit}>
                         <Segment stacked>
                             <Form.Field>
-                                <label>Full Name</label>
-                                <Input name="fullname" onChange={handleChange} placeholder='Full Name' />
-                            </Form.Field>
-                            <Form.Field>
                                 <label>Username</label>
-                                <Input name="username" onChange={handleChange} placeholder='Username' />
+                                <Input name="username" onChange={handleChange} placeholder='JhonDoe1994' />
                             </Form.Field>
                             <Form.Field>
                                 <label>Email</label>
-                                <Input name="email" onChange={handleChange} placeholder='Email' />
+                                <Input name="email" onChange={handleChange} placeholder='jhon@doe.com' />
+                            </Form.Field>
+                            <Form.Field>
+                                <label>Password</label>
+                                <Input name="password" onChange={handleChange} placeholder='******' />
                             </Form.Field>
                             <Form.Field>
                                 <Checkbox label='I agree to the Terms and Conditions' />

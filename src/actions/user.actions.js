@@ -12,16 +12,16 @@ export const userActions = {
     delete: _delete
 };
 
-function login(username) {
+function login(email, password) {
     const request = (user) => ({ type: userConstants.LOGIN_REQUEST, user });
     const success = (user) => ({ type: userConstants.LOGIN_SUCCESS, user });
     const failure = (error) => ({ type: alertConstants.ERROR, error })
 
     return async dispatch => {
-        dispatch(request({ username }));
+        dispatch(request({ email, password }));
         dispatch(getAll());
         try {
-            const user = await userService.login(username);
+            const user = await userService.login(email, password);
             dispatch(success(user));
             localStorage.setItem('user', JSON.stringify(user));
             history.push('/albums');
@@ -37,15 +37,15 @@ function logout() {
     return { type: userConstants.LOGOUT };
 }
 
-function register(user) {
-    const request = (user) => ({ type: userConstants.REGISTER_REQUEST, user })
-    const success = (user) => ({ type: userConstants.REGISTER_SUCCESS, user })
+function register(email, password) {
+    const request = () => ({ type: userConstants.REGISTER_REQUEST  })
+    const success = () => ({ type: userConstants.REGISTER_SUCCESS })
     const failure = (error) => ({ type: alertConstants.ERROR, error });
 
     return async dispatch => {
-        dispatch(request(user));
+        dispatch(request(email, password));
         try {
-            await userService.register(user);
+            await userService.register(email, password);
             dispatch(success());
             history.push('/login');
             dispatch(alertActions.success('Registration successful'));

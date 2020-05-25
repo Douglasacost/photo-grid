@@ -6,15 +6,16 @@ import { Link } from 'react-router-dom';
 
 export const LoginForm = () => {
     let [user, setUser] = useState({
-        username: '',
+        email: '',
+        password: ''
     });
     const dispatch = useDispatch();
     const loggingIn = useSelector(state => state.authentication.loggingIn);
 
     function handleSubmit(event) {
         event.preventDefault();
-        if (user.username) {
-            dispatch(userActions.login(user.username));
+        if (user.email) {
+            dispatch(userActions.login(user.email, user.password));
         }
     }
 
@@ -34,7 +35,8 @@ export const LoginForm = () => {
                     </Header>
                     <Form size='large' onSubmit={handleSubmit}>
                         <Segment stacked>
-                            <Form.Input onChange={handleChange} name="username" fluid icon='user' iconPosition='left' placeholder='E-mail address' />
+                            <Form.Input onChange={handleChange} name="email" fluid icon='user' iconPosition='left' placeholder='E-mail address' />
+                            <Form.Input onChange={handleChange} name="password" fluid placeholder='******' />
                             <Button className={loggingIn ? 'loading' : ''} color='teal' fluid size='large'>
                                 Login
                             </Button>
